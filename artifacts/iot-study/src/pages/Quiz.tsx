@@ -41,9 +41,8 @@ export default function Quiz() {
       window.scrollTo(0, 0);
     } else {
       setIsFinished(true);
-      // Determine final score since state update might be slightly delayed in this render cycle
-      const finalScore = score + (selectedOption === question.correctAnswer ? 1 : 0);
-      addQuizScore(finalScore);
+      // score is already updated by handleSubmit before handleNext is called
+      addQuizScore(score);
     }
   };
 
