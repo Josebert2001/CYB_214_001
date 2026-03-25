@@ -86,7 +86,7 @@ export default function Chapter() {
         </div>
 
         {/* Chapter Mini Quiz */}
-        <MiniQuiz chapterId={chapter.id} />
+        <MiniQuiz key={chapter.id} chapterId={chapter.id} />
 
         {/* Bottom Navigation */}
         <div className="mt-16 pt-8 border-t border-border flex flex-col sm:flex-row justify-between gap-4">
