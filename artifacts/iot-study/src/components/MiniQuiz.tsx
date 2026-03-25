@@ -20,12 +20,7 @@ export function MiniQuiz({ chapterId }: MiniQuizProps) {
 
   const questions = chapterQuiz.questions;
   const total = questions.length;
-
-  // Defensive guard: clamp index in case of stale state
-  const safeIdx = Math.min(currentIdx, total - 1);
-  const question = questions[safeIdx];
-
-  if (!question) return null;
+  const question = questions[currentIdx];
 
   const handleSelect = (idx: number) => {
     if (isAnswered) return;
