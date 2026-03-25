@@ -1,0 +1,15 @@
+packages:
+  "framer-motion": "For page transitions and smooth UI animations"
+  "zustand": "For global state management (study progress, quiz scores)"
+  "lucide-react": "For UI icons"
+  "clsx": "Utility for conditionally joining classNames"
+  "tailwind-merge": "Utility for merging tailwind classes safely"
+
+images:
+  - path: "artifacts/iot-study/public/images/hero-bg.png"
+    description: "Abstract modern technology background with glowing blue nodes, network lines, and a clean white/light-gray base, minimal, professional tech aesthetic"
+    aspect_ratio: "16:9"
+
+notes:
+  - "App is fully frontend-driven with hardcoded content"
+  - "Uses Zustand with persist middleware for saving chapter completion and quiz scores to localStorage"
