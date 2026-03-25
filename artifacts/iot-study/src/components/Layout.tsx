@@ -1,9 +1,42 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { cn } from '@/lib/utils';
-import { Book, CheckCircle2, ChevronRight, Menu, X, BrainCircuit, FileText, Home } from 'lucide-react';
+import { Book, CheckCircle2, ChevronRight, Menu, X, BrainCircuit, FileText, Home, Sun, Moon, Monitor } from 'lucide-react';
 import { useStudyStore } from '@/store/use-study-store';
 import { chaptersData } from '@/data/chapters-data';
+import { useTheme } from '@/components/theme-provider';
+
+type Theme = 'light' | 'dark' | 'system';
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+
+  const options: { value: Theme; icon: React.ComponentType<{ className?: string }> }[] = [
+    { value: 'light', icon: Sun },
+    { value: 'system', icon: Monitor },
+    { value: 'dark', icon: Moon },
+  ];
+
+  return (
+    <div className="flex items-center gap-1 bg-sidebar-border/40 rounded-lg p-0.5">
+      {options.map(({ value, icon: Icon }) => (
+        <button
+          key={value}
+          onClick={() => setTheme(value)}
+          aria-label={`Switch to ${value} theme`}
+          className={cn(
+            "p-1.5 rounded-md transition-colors",
+            theme === value
+              ? "bg-sidebar text-sidebar-primary shadow-sm"
+              : "text-sidebar-foreground/50 hover:text-sidebar-foreground"
+          )}
+        >
+          <Icon className="w-3.5 h-3.5" />
+        </button>
+      ))}
+    </div>
+  );
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
@@ -26,9 +59,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Book className="w-6 h-6" />
           <span>IoT Master</span>
         </div>
-        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-foreground">
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-foreground">
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Sidebar */}
@@ -37,11 +73,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         mobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
         "md:sticky md:top-0 md:h-screen"
       )}>
-        <div className="p-6 hidden md:flex items-center gap-3 text-sidebar-primary font-display font-bold text-2xl border-b border-sidebar-border">
-          <div className="bg-sidebar-primary text-sidebar-primary-foreground p-1.5 rounded-lg">
-            <Book className="w-5 h-5" />
+        <div className="p-6 hidden md:flex items-center justify-between border-b border-sidebar-border">
+          <div className="flex items-center gap-3 text-sidebar-primary font-display font-bold text-2xl">
+            <div className="bg-sidebar-primary text-sidebar-primary-foreground p-1.5 rounded-lg">
+              <Book className="w-5 h-5" />
+            </div>
+            IoT Master
           </div>
-          IoT Master
+          <ThemeToggle />
         </div>
 
         <div className="flex-1 overflow-y-auto py-4 px-3 space-y-8 scrollbar-thin">

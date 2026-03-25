@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { CheckCircle2, ChevronRight, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export function ConceptCard({ title, def, icon: Icon }: { title: string, def: string, icon?: any }) {
+export function ConceptCard({ title, def, icon: Icon }: { title: string, def: string, icon?: React.ComponentType<{ size?: number; className?: string }> }) {
   return (
     <div className="bg-card rounded-2xl p-5 shadow-sm border border-border/50 hover:shadow-md hover:border-primary/20 transition-all duration-300 relative overflow-hidden group">
       <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-[100px] -z-10 group-hover:bg-primary/10 transition-colors" />
