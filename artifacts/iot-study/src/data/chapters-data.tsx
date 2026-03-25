@@ -1,5 +1,6 @@
 import React from 'react';
 import { ConceptCard, SectionHeading, List } from '@/components/ui-elements';
+import { ArchitectureDiagram } from '@/components/ArchitectureDiagram';
 import { Network, Cpu, Shield, Cloud, Server, Lightbulb, Smartphone, Activity, MapPin, Database, Zap, Route } from 'lucide-react';
 
 export interface Chapter {
@@ -104,14 +105,8 @@ export const chaptersData: Chapter[] = [
         </div>
 
         <SectionHeading>The Expanded 5-Layer Model</SectionHeading>
-        <p className="text-muted-foreground mb-4">Adds crucial processing steps between network and application.</p>
-        <ol className="list-decimal pl-5 space-y-2 text-muted-foreground">
-          <li><strong className="text-foreground">Perception Layer</strong> - Data gathering.</li>
-          <li><strong className="text-foreground">Transport Layer</strong> - Data routing.</li>
-          <li><strong className="text-foreground">Processing/Middleware Layer</strong> - Stores, analyzes, and processes data using databases and cloud computing.</li>
-          <li><strong className="text-foreground">Application Layer</strong> - User interface and services.</li>
-          <li><strong className="text-foreground">Business Layer</strong> - Manages the whole IoT system, utilizing data to create flowcharts, graphs, and business models.</li>
-        </ol>
+        <p className="text-muted-foreground mb-4">Adds crucial processing steps between network and application. Click each layer to explore its role.</p>
+        <ArchitectureDiagram />
 
         <SectionHeading>Computing Paradigms</SectionHeading>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

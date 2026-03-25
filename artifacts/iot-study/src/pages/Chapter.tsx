@@ -3,6 +3,7 @@ import { useRoute, Link } from 'wouter';
 import { chaptersData } from '@/data/chapters-data';
 import { useStudyStore } from '@/store/use-study-store';
 import { PageTransition } from '@/components/ui-elements';
+import { MiniQuiz } from '@/components/MiniQuiz';
 import { CheckCircle2, ChevronLeft, ChevronRight, Circle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import NotFound from './not-found';
@@ -83,6 +84,9 @@ export default function Chapter() {
         <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-display prose-headings:font-bold prose-a:text-primary">
           {chapter.content}
         </div>
+
+        {/* Chapter Mini Quiz */}
+        <MiniQuiz chapterId={chapter.id} />
 
         {/* Bottom Navigation */}
         <div className="mt-16 pt-8 border-t border-border flex flex-col sm:flex-row justify-between gap-4">

@@ -5,6 +5,7 @@ export interface QuizQuestion {
   correctAnswer: number;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   explanation: string;
+  chapterId: string;
 }
 
 export const quizData: QuizQuestion[] = [
@@ -14,6 +15,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Tim Berners-Lee", "Kevin Ashton", "Vint Cerf", "Mark Weiser"],
     correctAnswer: 1,
     difficulty: "Easy",
+    chapterId: "ch1",
     explanation: "Kevin Ashton coined the term 'Internet of Things' in 1999 during a presentation at MIT about RFID in supply chains."
   },
   {
@@ -22,6 +24,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Network Layer", "Application Layer", "Perception Layer", "Transport Layer"],
     correctAnswer: 2,
     difficulty: "Easy",
+    chapterId: "ch2",
     explanation: "The Perception Layer (also known as the Sensing Layer) is responsible for collecting physical data using sensors and RFID tags."
   },
   {
@@ -30,6 +33,7 @@ export const quizData: QuizQuestion[] = [
     options: ["HTTP", "MQTT", "CoAP", "FTP"],
     correctAnswer: 1,
     difficulty: "Medium",
+    chapterId: "ch3",
     explanation: "MQTT (Message Queuing Telemetry Transport) is a lightweight publish-subscribe protocol ideal for IoT communication."
   },
   {
@@ -38,6 +42,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Low Power Wide Area Network", "Large Packet Wireless Area Network", "Low Protocol Wide Access Network", "Local Power Wireless Area Node"],
     correctAnswer: 0,
     difficulty: "Medium",
+    chapterId: "ch3",
     explanation: "LPWAN stands for Low Power Wide Area Network, designed to allow long-range communications at a low bit rate."
   },
   {
@@ -46,6 +51,7 @@ export const quizData: QuizQuestion[] = [
     options: ["WannaCry", "Stuxnet", "Mirai Botnet", "HeartBleed"],
     correctAnswer: 2,
     difficulty: "Medium",
+    chapterId: "ch6",
     explanation: "The Mirai botnet infected hundreds of thousands of IoT devices (like cameras and routers) to launch a massive DDoS attack in 2016."
   },
   {
@@ -54,6 +60,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Lower cost", "Reduced latency and bandwidth", "Better physical security", "Easier management"],
     correctAnswer: 1,
     difficulty: "Medium",
+    chapterId: "ch2",
     explanation: "Edge computing processes data near the source, which drastically reduces the latency and the amount of bandwidth needed to send data to the cloud."
   },
   {
@@ -62,6 +69,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Zigbee", "WiFi", "NFC", "Bluetooth"],
     correctAnswer: 2,
     difficulty: "Easy",
+    chapterId: "ch3",
     explanation: "NFC (Near Field Communication) operates over very short distances, typically less than 10 centimeters."
   },
   {
@@ -70,6 +78,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Message Queue Telemetry Technology", "Message Queuing Telemetry Transport", "Mobile Queue Text Transfer", "Managed Queue Telemetry Tool"],
     correctAnswer: 1,
     difficulty: "Hard",
+    chapterId: "ch3",
     explanation: "MQTT stands for Message Queuing Telemetry Transport, a standard messaging protocol for IoT."
   },
   {
@@ -78,6 +87,7 @@ export const quizData: QuizQuestion[] = [
     options: ["A microprocessor", "An operating system", "An open-source microcontroller platform", "A cloud service"],
     correctAnswer: 2,
     difficulty: "Easy",
+    chapterId: "ch4",
     explanation: "Arduino is an open-source electronics platform based on easy-to-use hardware and software microcontrollers."
   },
   {
@@ -86,6 +96,7 @@ export const quizData: QuizQuestion[] = [
     options: ["MySQL", "Microsoft Access", "InfluxDB", "MongoDB"],
     correctAnswer: 2,
     difficulty: "Medium",
+    chapterId: "ch5",
     explanation: "InfluxDB is a time-series database explicitly optimized to handle the high-write loads and timestamped data typical of IoT."
   },
   {
@@ -94,6 +105,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Perception Layer", "Transport Layer", "Processing/Middleware Layer", "Business Layer"],
     correctAnswer: 2,
     difficulty: "Medium",
+    chapterId: "ch2",
     explanation: "The Processing or Middleware layer handles data storage, analytics, and processing before passing it to the application layer."
   },
   {
@@ -102,6 +114,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Ultra-low latency (<1ms)", "Shorter range than Bluetooth", "Higher power consumption than Wi-Fi", "Inability to handle massive device density"],
     correctAnswer: 0,
     difficulty: "Easy",
+    chapterId: "ch3",
     explanation: "5G networks offer ultra-low latency, high bandwidth, and can support a massive density of devices simultaneously."
   },
   {
@@ -110,6 +123,7 @@ export const quizData: QuizQuestion[] = [
     options: ["10-15 meters", "100-200 meters", "1-2 kilometers", "10-15 kilometers"],
     correctAnswer: 3,
     difficulty: "Medium",
+    chapterId: "ch3",
     explanation: "LoRaWAN is a long-range technology capable of reaching 10 to 15 kilometers in rural or optimal line-of-sight environments."
   },
   {
@@ -118,6 +132,7 @@ export const quizData: QuizQuestion[] = [
     options: ["To measure physical parameters", "To convert signals into physical action", "To store data in the cloud", "To route internet traffic"],
     correctAnswer: 1,
     difficulty: "Easy",
+    chapterId: "ch4",
     explanation: "Actuators receive electrical signals and convert them into physical movement or action (e.g., turning a motor, opening a valve)."
   },
   {
@@ -126,6 +141,7 @@ export const quizData: QuizQuestion[] = [
     options: ["LDR", "Thermistor", "PIR", "Barometric pressure sensor"],
     correctAnswer: 2,
     difficulty: "Easy",
+    chapterId: "ch4",
     explanation: "PIR (Passive Infrared) sensors detect infrared radiation emitted by humans and are standard for motion detection."
   },
   {
@@ -134,6 +150,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Microprocessors are lower power", "Microcontrollers run full operating systems like Linux", "Microcontrollers have CPU, memory, and I/O integrated on a single chip", "Microprocessors are cheaper and simpler"],
     correctAnswer: 2,
     difficulty: "Medium",
+    chapterId: "ch4",
     explanation: "Microcontrollers are all-in-one chips designed for specific control tasks, whereas microprocessors usually require external memory and peripherals."
   },
   {
@@ -142,6 +159,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Constrained Application Protocol", "Computer Analytics Protocol", "Connected Automation Process", "Cloud Object Access Protocol"],
     correctAnswer: 0,
     difficulty: "Hard",
+    chapterId: "ch3",
     explanation: "CoAP is the Constrained Application Protocol, a specialized web transfer protocol for constrained nodes and networks."
   },
   {
@@ -150,6 +168,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Batch processing", "Stream processing", "Archive processing", "Offline processing"],
     correctAnswer: 1,
     difficulty: "Medium",
+    chapterId: "ch5",
     explanation: "Stream processing analyzes continuous streams of data in real-time or near-real-time."
   },
   {
@@ -158,6 +177,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Overwhelming a server with traffic", "Guessing default passwords", "Intercepting and potentially altering communication between two devices", "Tampering with physical hardware"],
     correctAnswer: 2,
     difficulty: "Medium",
+    chapterId: "ch6",
     explanation: "In a MitM attack, the attacker secretly intercepts and relays communications between two parties who believe they are communicating directly."
   },
   {
@@ -166,6 +186,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Secure Boot", "TLS/SSL Encryption", "Role-Based Access Control", "Input Validation"],
     correctAnswer: 1,
     difficulty: "Hard",
+    chapterId: "ch6",
     explanation: "TLS (Transport Layer Security) encrypts data in transit, securing the Communication Layer."
   },
   {
@@ -174,6 +195,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Replacing human farmers with robots", "Using sensors and data to optimize crop yields and resource usage", "Growing food in urban laboratories only", "Distributing crops globally"],
     correctAnswer: 1,
     difficulty: "Easy",
+    chapterId: "ch7",
     explanation: "Precision agriculture uses IoT sensors (soil, weather) to make data-driven decisions that maximize yield and minimize waste."
   },
   {
@@ -182,6 +204,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Internet of Mobile Things", "Internet of Manufacturing Things", "Internet of Medical Things", "Internet of Media Things"],
     correctAnswer: 2,
     difficulty: "Easy",
+    chapterId: "ch7",
     explanation: "IoMT stands for Internet of Medical Things, referring to connected medical devices and healthcare systems."
   },
   {
@@ -190,6 +213,7 @@ export const quizData: QuizQuestion[] = [
     options: ["MQTT", "CoAP", "HTTP", "Zigbee"],
     correctAnswer: 3,
     difficulty: "Medium",
+    chapterId: "ch3",
     explanation: "Zigbee is a network/transport level technology (IEEE 802.15.4), whereas MQTT, CoAP, and HTTP operate at the application layer."
   },
   {
@@ -198,6 +222,7 @@ export const quizData: QuizQuestion[] = [
     options: ["A backup device kept in a warehouse", "A virtual software replica of a physical object or system", "Two sensors placed together for redundancy", "A duplicate database entry"],
     correctAnswer: 1,
     difficulty: "Hard",
+    chapterId: "ch5",
     explanation: "A digital twin is a dynamic virtual representation of a physical object or system, updated in real-time using IoT data."
   },
   {
@@ -206,6 +231,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Actuator", "Cloud Server", "IoT Gateway", "Passive RFID tag"],
     correctAnswer: 2,
     difficulty: "Easy",
+    chapterId: "ch1",
     explanation: "An IoT Gateway connects local sensor networks to the external internet or cloud infrastructure."
   },
   {
@@ -214,6 +240,7 @@ export const quizData: QuizQuestion[] = [
     options: ["3", "4", "5", "7"],
     correctAnswer: 3,
     difficulty: "Hard",
+    chapterId: "ch2",
     explanation: "The IoT World Forum Reference Model defines 7 layers, from Physical Devices up to Collaboration & Processes."
   },
   {
@@ -222,6 +249,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Digital (0 or 1)", "Analog (Continuous)", "I2C", "SPI"],
     correctAnswer: 1,
     difficulty: "Hard",
+    chapterId: "ch4",
     explanation: "An LDR outputs a varying resistance based on light levels, which is read as an analog voltage."
   },
   {
@@ -230,6 +258,7 @@ export const quizData: QuizQuestion[] = [
     options: ["They use too much power", "They rely on wired connections", "They ship with hardcoded, default passwords", "They update too frequently"],
     correctAnswer: 2,
     difficulty: "Easy",
+    chapterId: "ch6",
     explanation: "Many consumer devices ship with default, easily guessable passwords, making them prime targets for botnets."
   },
   {
@@ -238,6 +267,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Arduino Uno", "ESP8266", "Raspberry Pi", "PIC microcontroller"],
     correctAnswer: 2,
     difficulty: "Medium",
+    chapterId: "ch4",
     explanation: "The Raspberry Pi is a Single Board Computer (SBC) that runs full operating systems like Linux."
   },
   {
@@ -246,6 +276,7 @@ export const quizData: QuizQuestion[] = [
     options: ["Private Key Integration", "Public Key Infrastructure", "Primary Knowledge Interface", "Protected Key Internet"],
     correctAnswer: 1,
     difficulty: "Medium",
+    chapterId: "ch6",
     explanation: "PKI (Public Key Infrastructure) uses digital certificates to authenticate devices and encrypt communications."
   }
 ];

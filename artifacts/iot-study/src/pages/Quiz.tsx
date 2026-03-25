@@ -1,23 +1,189 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { quizData } from '@/data/quiz-data';
+import { chaptersData } from '@/data/chapters-data';
 import { useStudyStore } from '@/store/use-study-store';
 import { PageTransition, ProgressBar } from '@/components/ui-elements';
-import { CheckCircle2, XCircle, RotateCcw, Award, ChevronRight, Home } from 'lucide-react';
+import { CheckCircle2, XCircle, RotateCcw, Award, ChevronRight, Home, SlidersHorizontal, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from 'wouter';
 
+type Difficulty = 'Easy' | 'Medium' | 'Hard';
+
+function FilterPanel({
+  selectedChapters,
+  setSelectedChapters,
+  selectedDifficulties,
+  setSelectedDifficulties,
+  matchCount,
+  onStart,
+}: {
+  selectedChapters: string[];
+  setSelectedChapters: (v: string[]) => void;
+  selectedDifficulties: Difficulty[];
+  setSelectedDifficulties: (v: Difficulty[]) => void;
+  matchCount: number;
+  onStart: () => void;
+}) {
+  const difficulties: Difficulty[] = ['Easy', 'Medium', 'Hard'];
+
+  const toggleChapter = (id: string) => {
+    setSelectedChapters(
+      selectedChapters.includes(id)
+        ? selectedChapters.filter(c => c !== id)
+        : [...selectedChapters, id]
+    );
+  };
+
+  const toggleDifficulty = (d: Difficulty) => {
+    setSelectedDifficulties(
+      selectedDifficulties.includes(d)
+        ? selectedDifficulties.filter(x => x !== d)
+        : [...selectedDifficulties, d]
+    );
+  };
+
+  const difficultyStyles: Record<Difficulty, string> = {
+    Easy: "bg-green-100 text-green-700 border-green-300 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700",
+    Medium: "bg-yellow-100 text-yellow-700 border-yellow-300 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700",
+    Hard: "bg-red-100 text-red-700 border-red-300 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700",
+  };
+
+  const selectedDiffStyle: Record<Difficulty, string> = {
+    Easy: "bg-green-500 text-white border-green-500",
+    Medium: "bg-yellow-500 text-white border-yellow-500",
+    Hard: "bg-red-500 text-white border-red-500",
+  };
+
+  return (
+    <PageTransition>
+      <div className="max-w-2xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-display font-bold">Practice Quiz</h1>
+          <p className="text-muted-foreground mt-1">Filter questions to focus on your weak spots, or start all 30</p>
+        </div>
+
+        <div className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm space-y-8">
+          {/* Filter icon header */}
+          <div className="flex items-center gap-2 text-primary font-semibold">
+            <SlidersHorizontal className="w-5 h-5" />
+            <span>Question Filters</span>
+            {(selectedChapters.length > 0 || selectedDifficulties.length > 0) && (
+              <button
+                onClick={() => { setSelectedChapters([]); setSelectedDifficulties([]); }}
+                className="ml-auto text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
+              >
+                <X className="w-3 h-3" /> Clear all
+              </button>
+            )}
+          </div>
+
+          {/* Chapter filter */}
+          <div>
+            <p className="text-sm font-semibold text-foreground mb-3">Filter by Chapter</p>
+            <div className="flex flex-wrap gap-2">
+              {chaptersData.map(ch => {
+                const isSelected = selectedChapters.includes(ch.id);
+                return (
+                  <button
+                    key={ch.id}
+                    onClick={() => toggleChapter(ch.id)}
+                    className={cn(
+                      "px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all",
+                      isSelected
+                        ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                        : "bg-muted/40 border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                    )}
+                  >
+                    Ch.{ch.id.replace('ch', '')}
+                  </button>
+                );
+              })}
+            </div>
+            {selectedChapters.length > 0 && (
+              <p className="text-xs text-muted-foreground mt-2">
+                {selectedChapters.map(id => chaptersData.find(c => c.id === id)?.title).join(', ')}
+              </p>
+            )}
+          </div>
+
+          {/* Difficulty filter */}
+          <div>
+            <p className="text-sm font-semibold text-foreground mb-3">Filter by Difficulty</p>
+            <div className="flex gap-2">
+              {difficulties.map(d => {
+                const isSelected = selectedDifficulties.includes(d);
+                return (
+                  <button
+                    key={d}
+                    onClick={() => toggleDifficulty(d)}
+                    className={cn(
+                      "px-4 py-2 rounded-xl text-xs font-bold border-2 transition-all",
+                      isSelected ? selectedDiffStyle[d] : difficultyStyles[d]
+                    )}
+                  >
+                    {d}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="pt-2 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-muted-foreground">
+              {matchCount === 0
+                ? "No questions match these filters"
+                : `${matchCount} question${matchCount !== 1 ? 's' : ''} selected`}
+            </p>
+            <button
+              onClick={onStart}
+              disabled={matchCount === 0}
+              className="px-8 py-3 rounded-xl bg-primary text-primary-foreground font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-y-0 flex items-center gap-2"
+            >
+              Start Quiz <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </PageTransition>
+  );
+}
+
 export default function Quiz() {
+  const [selectedChapters, setSelectedChapters] = useState<string[]>([]);
+  const [selectedDifficulties, setSelectedDifficulties] = useState<Difficulty[]>([]);
+  const [quizStarted, setQuizStarted] = useState(false);
+  const [activeQuestions, setActiveQuestions] = useState(quizData);
+
   const [currentIdx, setCurrentIdx] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
-  
+
   const { addQuizScore } = useStudyStore();
-  
-  const question = quizData[currentIdx];
-  const totalQuestions = quizData.length;
-  const progress = ((currentIdx) / totalQuestions) * 100;
+
+  const filteredQuestions = useMemo(() => {
+    return quizData.filter(q => {
+      const chapterMatch = selectedChapters.length === 0 || selectedChapters.includes(q.chapterId);
+      const diffMatch = selectedDifficulties.length === 0 || selectedDifficulties.includes(q.difficulty);
+      return chapterMatch && diffMatch;
+    });
+  }, [selectedChapters, selectedDifficulties]);
+
+  const handleStart = () => {
+    setActiveQuestions(filteredQuestions);
+    setCurrentIdx(0);
+    setSelectedOption(null);
+    setIsAnswered(false);
+    setScore(0);
+    setIsFinished(false);
+    setQuizStarted(true);
+  };
+
+  const question = activeQuestions[currentIdx];
+  const totalQuestions = activeQuestions.length;
+  const progress = (currentIdx / Math.max(totalQuestions, 1)) * 100;
 
   const handleSelect = (idx: number) => {
     if (isAnswered) return;
@@ -26,7 +192,6 @@ export default function Quiz() {
 
   const handleSubmit = () => {
     if (selectedOption === null) return;
-    
     setIsAnswered(true);
     if (selectedOption === question.correctAnswer) {
       setScore(s => s + 1);
@@ -41,19 +206,31 @@ export default function Quiz() {
       window.scrollTo(0, 0);
     } else {
       setIsFinished(true);
-      // score is already updated by handleSubmit before handleNext is called
       addQuizScore(score);
     }
   };
 
   const resetQuiz = () => {
+    setQuizStarted(false);
     setCurrentIdx(0);
     setSelectedOption(null);
     setIsAnswered(false);
     setScore(0);
     setIsFinished(false);
-    window.scrollTo(0, 0);
   };
+
+  if (!quizStarted) {
+    return (
+      <FilterPanel
+        selectedChapters={selectedChapters}
+        setSelectedChapters={setSelectedChapters}
+        selectedDifficulties={selectedDifficulties}
+        setSelectedDifficulties={setSelectedDifficulties}
+        matchCount={filteredQuestions.length}
+        onStart={handleStart}
+      />
+    );
+  }
 
   if (isFinished) {
     const percentage = Math.round((score / totalQuestions) * 100);
@@ -74,15 +251,15 @@ export default function Quiz() {
             <div className="text-7xl font-bold text-primary mb-6">{percentage}%</div>
             <p className="text-xl text-muted-foreground mb-2">You scored {score} out of {totalQuestions}</p>
             <p className="text-foreground font-medium mb-10">{feedback}</p>
-            
+
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <button 
+              <button
                 onClick={resetQuiz}
                 className="px-8 py-3 rounded-xl bg-primary text-primary-foreground font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2"
               >
-                <RotateCcw className="w-5 h-5" /> Retake Quiz
+                <RotateCcw className="w-5 h-5" /> Try Again / Change Filters
               </button>
-              <Link 
+              <Link
                 href="/"
                 className="px-8 py-3 rounded-xl bg-secondary text-secondary-foreground font-bold hover:bg-secondary/80 transition-all flex items-center justify-center gap-2"
               >
@@ -98,7 +275,7 @@ export default function Quiz() {
   return (
     <PageTransition>
       <div className="max-w-3xl mx-auto">
-        
+
         {/* Header & Progress */}
         <div className="mb-8">
           <div className="flex justify-between items-end mb-4">
@@ -115,7 +292,7 @@ export default function Quiz() {
 
         {/* Question Card */}
         <div className="bg-card rounded-2xl border border-border shadow-md overflow-hidden">
-          
+
           <div className="p-6 md:p-8 border-b border-border bg-slate-50/50 dark:bg-slate-900/50">
             <div className="flex items-center gap-2 mb-4">
               <span className={cn(
@@ -126,7 +303,10 @@ export default function Quiz() {
               )}>
                 {question.difficulty}
               </span>
-              <span className="text-muted-foreground text-sm font-medium">Question {currentIdx + 1}</span>
+              <span className="text-muted-foreground text-xs font-medium px-2 py-1 bg-muted/50 rounded-md">
+                {chaptersData.find(c => c.id === question.chapterId)?.title.replace(/^\d+\.\s*/, '') ?? question.chapterId}
+              </span>
+              <span className="text-muted-foreground text-sm font-medium ml-auto">Question {currentIdx + 1}</span>
             </div>
             <h2 className="text-xl md:text-2xl font-semibold leading-relaxed text-foreground">
               {question.question}
@@ -137,10 +317,10 @@ export default function Quiz() {
             {question.options.map((option, idx) => {
               const isSelected = selectedOption === idx;
               const isCorrect = idx === question.correctAnswer;
-              
+
               let styleClass = "border-border hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800/50";
               let Icon = null;
-              
+
               if (isAnswered) {
                 if (isCorrect) {
                   styleClass = "border-green-500 bg-green-50 dark:bg-green-900/20 text-green-900 dark:text-green-100";
@@ -171,13 +351,13 @@ export default function Quiz() {
               );
             })}
           </div>
-          
+
           {/* Explanation Box */}
           {isAnswered && (
             <div className={cn(
               "m-6 md:m-8 mt-0 p-5 rounded-xl border",
-              selectedOption === question.correctAnswer 
-                ? "bg-green-50 border-green-200 dark:bg-green-900/10 dark:border-green-900/30" 
+              selectedOption === question.correctAnswer
+                ? "bg-green-50 border-green-200 dark:bg-green-900/10 dark:border-green-900/30"
                 : "bg-red-50 border-red-200 dark:bg-red-900/10 dark:border-red-900/30"
             )}>
               <h4 className={cn(
