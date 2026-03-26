@@ -13,20 +13,137 @@ import {
   ChevronDown,
   ChevronUp,
   Package,
+  Info,
 } from 'lucide-react';
 
 import arduinoImg from '@assets/Official_Arduino_Uno_R3_SMD_Microcontroller_Board_1774485602003.webp';
 import ledImg from '@assets/10820-03-L_RGB_Clear_Common_Anode_LED-5mm_1774485602003.jpg';
 import buttonImg from '@assets/61bkpqiCYsL_1774485602002.jpg';
 import breadboardImg from '@assets/breadboard_1774485602003.jpg';
+
 import p1DiagramImg from '@assets/ChatGPT_Image_Mar_26,_2026,_01_47_10_AM_1774486043489.png';
+
+import p2ComponentsImg from '@assets/ChatGPT_Image_Mar_26,_2026,_02_01_29_AM_1774486914414.png';
+import p2CircuitImg from '@assets/arduino-rgb-led_1774486953407.jpg';
+import p2SchematicImg from '@assets/rgb_led_schematic_nxh560bdvq_ET208CfYXL_1774486953408.png';
 
 const componentImages: Record<string, string> = {
   arduino: arduinoImg,
   led: ledImg,
+  rgbled: ledImg,
   button: buttonImg,
   breadboard: breadboardImg,
 };
+
+const practicalDiagrams: Record<string, React.ReactNode> = {
+  p1: (
+    <div className="space-y-4">
+      <div className="bg-white dark:bg-slate-900 border border-border rounded-2xl overflow-hidden shadow-sm">
+        <img
+          src={p1DiagramImg}
+          alt="Practical 1 circuit diagram — push button controls LED"
+          className="w-full object-contain"
+        />
+      </div>
+      <p className="text-xs text-muted-foreground">
+        Yellow wire = D13 (LED). Blue wire = D7 (button). Red wire = 5V. Black wire = GND.
+      </p>
+      <div className="bg-card border border-border rounded-2xl p-4 md:p-6 shadow-sm">
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+          Connection Overview
+        </p>
+        <WiringDiagram />
+      </div>
+    </div>
+  ),
+  p2: (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-white dark:bg-slate-900 border border-border rounded-2xl overflow-hidden shadow-sm">
+          <div className="px-4 pt-3 pb-1">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              Components Layout
+            </p>
+          </div>
+          <img
+            src={p2ComponentsImg}
+            alt="Practical 2 components — RGB LED, resistors, breadboard, Arduino Uno, jumper wires"
+            className="w-full object-contain p-2"
+          />
+        </div>
+        <div className="bg-white dark:bg-slate-900 border border-border rounded-2xl overflow-hidden shadow-sm">
+          <div className="px-4 pt-3 pb-1">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              Wiring Diagram
+            </p>
+          </div>
+          <img
+            src={p2CircuitImg}
+            alt="Practical 2 wiring diagram — RGB LED connected to Arduino Uno"
+            className="w-full object-contain p-2"
+          />
+        </div>
+      </div>
+      <div className="bg-white dark:bg-slate-900 border border-border rounded-2xl overflow-hidden shadow-sm">
+        <div className="px-4 pt-3 pb-1">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+            Fritzing Schematic — Pin Detail
+          </p>
+        </div>
+        <img
+          src={p2SchematicImg}
+          alt="Practical 2 Fritzing schematic — RGB LED pin connections on breadboard"
+          className="w-full object-contain max-h-72 p-2"
+        />
+      </div>
+    </div>
+  ),
+};
+
+const P2_COLORS = [
+  { label: 'Red',    r: 255, g: 0,   b: 0   },
+  { label: 'Green',  r: 0,   g: 255, b: 0   },
+  { label: 'Blue',   r: 0,   g: 0,   b: 255 },
+  { label: 'Yellow', r: 255, g: 255, b: 0   },
+  { label: 'Purple', r: 80,  g: 0,   b: 80  },
+  { label: 'Aqua',   r: 0,   g: 255, b: 255 },
+];
+
+function ColorPalette() {
+  const [active, setActive] = useState<number | null>(null);
+  return (
+    <div>
+      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+        Color Cycle Preview — click a color to see its PWM values
+      </p>
+      <div className="flex flex-wrap gap-3">
+        {P2_COLORS.map((c, i) => (
+          <button
+            key={c.label}
+            onClick={() => setActive(active === i ? null : i)}
+            className={cn(
+              "flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all",
+              active === i ? "border-foreground shadow-md scale-105" : "border-transparent hover:border-border"
+            )}
+          >
+            <div
+              className="w-12 h-12 rounded-full shadow-inner"
+              style={{ backgroundColor: `rgb(${c.r},${c.g},${c.b})` }}
+            />
+            <span className="text-xs font-semibold text-foreground">{c.label}</span>
+            {active === i && (
+              <div className="text-xs text-muted-foreground font-mono text-center leading-relaxed">
+                <span className="text-red-500">R:{c.r}</span>{' '}
+                <span className="text-green-500">G:{c.g}</span>{' '}
+                <span className="text-blue-500">B:{c.b}</span>
+              </div>
+            )}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function CodeBlock({ code }: { code: string }) {
   const [copied, setCopied] = useState(false);
@@ -39,15 +156,32 @@ function CodeBlock({ code }: { code: string }) {
   };
 
   const tokenize = (line: string) => {
-    const keywords = ['const', 'int', 'void', 'if', 'else', 'return'];
-    const functions = ['setup', 'loop', 'pinMode', 'digitalWrite', 'digitalRead'];
-    const constants = ['INPUT', 'OUTPUT', 'HIGH', 'LOW', 'INPUT_PULLUP'];
+    const keywords = ['const', 'int', 'void', 'if', 'else', 'return', 'define', 'ifdef', 'endif'];
+    const functions = [
+      'setup', 'loop', 'pinMode', 'digitalWrite', 'digitalRead',
+      'analogWrite', 'delay', 'setColor',
+    ];
+    const constants = ['INPUT', 'OUTPUT', 'HIGH', 'LOW', 'INPUT_PULLUP', 'COMMON_ANODE'];
 
     const parts: { text: string; type: string }[] = [];
     let remaining = line;
 
     while (remaining.length > 0) {
       let matched = false;
+
+      if (remaining.startsWith('//')) {
+        parts.push({ text: remaining, type: 'comment' });
+        remaining = '';
+        continue;
+      }
+
+      if (remaining.startsWith('#')) {
+        const spaceIdx = remaining.indexOf(' ');
+        const directive = spaceIdx > -1 ? remaining.slice(0, spaceIdx) : remaining;
+        parts.push({ text: directive, type: 'keyword' });
+        remaining = spaceIdx > -1 ? remaining.slice(spaceIdx) : '';
+        continue;
+      }
 
       for (const kw of keywords) {
         const re = new RegExp(`^(${kw})\\b`);
@@ -105,6 +239,7 @@ function CodeBlock({ code }: { code: string }) {
       case 'function': return 'text-yellow-300';
       case 'constant': return 'text-orange-300';
       case 'number': return 'text-cyan-300';
+      case 'comment': return 'text-slate-500 italic';
       default: return 'text-slate-200';
     }
   };
@@ -155,11 +290,10 @@ function TroubleshootingItem({ problem, fix }: { problem: string; fix: string })
           <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />
           <span className="text-sm font-medium text-foreground">{problem}</span>
         </div>
-        {open ? (
-          <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0" />
-        ) : (
-          <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
-        )}
+        {open
+          ? <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0" />
+          : <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
+        }
       </button>
       {open && (
         <div className="px-4 pb-4 pt-1 bg-amber-50 dark:bg-amber-900/10 border-t border-amber-200/50 dark:border-amber-800/30">
@@ -174,7 +308,8 @@ function TroubleshootingItem({ problem, fix }: { problem: string; fix: string })
 }
 
 export default function Practicals() {
-  const practical = practicalsData[0];
+  const [selectedIdx, setSelectedIdx] = useState(0);
+  const practical = practicalsData[selectedIdx];
 
   return (
     <div className="space-y-10 pb-16">
@@ -184,15 +319,51 @@ export default function Practicals() {
           <CircuitBoard className="w-4 h-4" />
           Lab Practicals
         </div>
-        <h1 className="text-3xl md:text-4xl font-display font-extrabold text-foreground mb-2">
-          {practical.title}: {practical.subtitle}
+        <h1 className="text-3xl md:text-4xl font-display font-extrabold text-foreground mb-4">
+          Arduino Practicals
         </h1>
-        <p className="text-muted-foreground text-base leading-relaxed max-w-2xl">
-          {practical.objective}
-        </p>
+
+        {/* Practical Selector Tabs */}
+        <div className="flex gap-2 flex-wrap">
+          {practicalsData.map((p, i) => (
+            <button
+              key={p.id}
+              onClick={() => setSelectedIdx(i)}
+              className={cn(
+                "px-5 py-2.5 rounded-xl text-sm font-semibold border-2 transition-all",
+                selectedIdx === i
+                  ? "bg-primary text-primary-foreground border-primary shadow-md shadow-primary/20"
+                  : "bg-card text-foreground border-border hover:border-primary/40 hover:bg-muted/40"
+              )}
+            >
+              {p.title}
+              <span className={cn(
+                "ml-2 text-xs",
+                selectedIdx === i ? "text-primary-foreground/70" : "text-muted-foreground"
+              )}>
+                {p.subtitle}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* ── Components Section ── */}
+      {/* Practical Title + Objective */}
+      <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+        <div className="flex items-start gap-4">
+          <div className="p-3 bg-primary/10 text-primary rounded-xl shrink-0">
+            <CircuitBoard className="w-6 h-6" />
+          </div>
+          <div>
+            <h2 className="text-xl font-display font-bold text-foreground mb-1">
+              {practical.title}: {practical.subtitle}
+            </h2>
+            <p className="text-muted-foreground text-sm leading-relaxed">{practical.objective}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Components ── */}
       <section>
         <div className="flex items-center gap-3 mb-5">
           <div className="p-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl">
@@ -200,7 +371,6 @@ export default function Practicals() {
           </div>
           <h2 className="text-xl font-display font-bold text-foreground">Components Required</h2>
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {practical.components.map((comp) => (
             <div
@@ -234,7 +404,7 @@ export default function Practicals() {
         </div>
       </section>
 
-      {/* ── Wiring Diagram ── */}
+      {/* ── Circuit Diagrams ── */}
       <section>
         <div className="flex items-center gap-3 mb-5">
           <div className="p-2 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-xl">
@@ -242,25 +412,25 @@ export default function Practicals() {
           </div>
           <h2 className="text-xl font-display font-bold text-foreground">Circuit Diagram</h2>
         </div>
-        <div className="bg-white dark:bg-slate-900 border border-border rounded-2xl overflow-hidden shadow-sm">
-          <img
-            src={p1DiagramImg}
-            alt="Practical 1 circuit diagram — push button controls LED with Arduino"
-            className="w-full object-contain"
-          />
-        </div>
-        <p className="mt-3 text-xs text-muted-foreground">
-          Yellow wire = D13 (LED). Blue wire = D7 (button). Red wire = 5V. Black wire = GND.
-        </p>
-
-        {/* Schematic overview */}
-        <div className="mt-4 bg-card border border-border rounded-2xl p-4 md:p-6 shadow-sm">
-          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Connection Overview</p>
-          <WiringDiagram />
-        </div>
+        {practicalDiagrams[practical.id]}
       </section>
 
-      {/* ── Wiring Steps Table ── */}
+      {/* ── Color Palette (P2 only) ── */}
+      {practical.id === 'p2' && (
+        <section>
+          <div className="flex items-center gap-3 mb-5">
+            <div className="p-2 bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 rounded-xl">
+              <Zap className="w-5 h-5" />
+            </div>
+            <h2 className="text-xl font-display font-bold text-foreground">PWM Color Mixing</h2>
+          </div>
+          <div className="bg-card border border-border rounded-2xl p-5 shadow-sm">
+            <ColorPalette />
+          </div>
+        </section>
+      )}
+
+      {/* ── Wiring Table ── */}
       <section>
         <div className="flex items-center gap-3 mb-5">
           <div className="p-2 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 rounded-xl">
@@ -298,10 +468,23 @@ export default function Practicals() {
             </tbody>
           </table>
         </div>
-        <p className="mt-3 text-xs text-muted-foreground">
-          <strong>Tip:</strong> Always connect GND first so there is a common reference for all components.
-        </p>
+        {practical.wiringNote && (
+          <p className="mt-3 text-xs text-muted-foreground">
+            <strong>Tip:</strong> {practical.wiringNote}
+          </p>
+        )}
       </section>
+
+      {/* ── Important Note (P2 common anode) ── */}
+      {practical.importantNote && (
+        <div className="flex gap-3 bg-blue-50 dark:bg-blue-900/15 border border-blue-200 dark:border-blue-800/40 rounded-2xl p-4">
+          <Info className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            <strong className="text-blue-700 dark:text-blue-400">Important — Common Anode vs Cathode: </strong>
+            {practical.importantNote}
+          </p>
+        </div>
+      )}
 
       {/* ── Arduino Code ── */}
       <section>

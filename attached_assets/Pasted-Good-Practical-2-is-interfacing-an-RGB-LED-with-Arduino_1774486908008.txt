@@ -1,0 +1,92 @@
+Good — **Practical 2** is **interfacing an RGB LED with Arduino**.
+
+An RGB LED has **4 legs**: one for **red**, one for **green**, one for **blue**, and one **common leg**. In Adafruit’s Arduino RGB LED guide, the common negative connection is the **second pin from the flat side**, and it is the **longest leg** for the common-cathode type. The same guide uses Arduino PWM pins **11, 10, and 9** so the brightness of each color can be controlled. ([Adafruit Learning System][1])
+
+## Components
+
+* Arduino Uno
+* 1 RGB LED
+* 3 resistors, usually **220Ω**
+* Breadboard
+* Jumper wires ([Adafruit Learning System][2])
+
+## Connection
+
+For a **common cathode RGB LED**, connect it like this:
+
+* **Common leg** → **GND**
+* **Red leg** → **220Ω resistor** → **D11**
+* **Green leg** → **220Ω resistor** → **D10**
+* **Blue leg** → **220Ω resistor** → **D9** ([Adafruit Learning System][1])
+
+## How it works
+
+The Arduino sends PWM values from **0 to 255** to each color pin using `analogWrite()`.
+
+* `0` means that color is off
+* `255` means that color is at maximum brightness
+  By mixing red, green, and blue brightness levels, you can create many colors like red, green, blue, yellow, purple, and aqua. ([Adafruit Learning System][2])
+
+## Code
+
+```cpp
+int redPin = 11;
+int greenPin = 10;
+int bluePin = 9;
+
+// Uncomment the next line only if your RGB LED is common anode
+// #define COMMON_ANODE
+
+void setup() {
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+}
+
+void loop() {
+  setColor(255, 0, 0);   // Red
+  delay(1000);
+  setColor(0, 255, 0);   // Green
+  delay(1000);
+  setColor(0, 0, 255);   // Blue
+  delay(1000);
+  setColor(255, 255, 0); // Yellow
+  delay(1000);
+  setColor(80, 0, 80);   // Purple
+  delay(1000);
+  setColor(0, 255, 255); // Aqua
+  delay(1000);
+}
+
+void setColor(int red, int green, int blue) {
+#ifdef COMMON_ANODE
+  red = 255 - red;
+  green = 255 - green;
+  blue = 255 - blue;
+#endif
+
+  analogWrite(redPin, red);
+  analogWrite(greenPin, green);
+  analogWrite(bluePin, blue);
+}
+```
+
+This code is based on Adafruit’s Arduino RGB LED example, including the note that **common anode** LEDs need inverted values by subtracting from 255. ([Adafruit Learning System][2])
+
+## Important note
+
+If your RGB LED is **common anode** instead of common cathode, the common leg goes to **5V**, not GND, and you should enable the `#define COMMON_ANODE` line in the code so the color values are inverted correctly. ([Adafruit Learning System][2])
+
+## Quick check
+
+If it does not work:
+
+* make sure each color pin has its **own resistor**
+* check whether your RGB LED is **common cathode or common anode**
+* make sure you used **PWM pins** like 9, 10, and 11
+* confirm the LED orientation from the **flat side / longest leg** rule before wiring it up. ([Adafruit Learning System][1])
+
+Next I’ll make the **Practical 2 connection diagram**.
+
+[1]: https://learn.adafruit.com/adafruit-arduino-lesson-3-rgb-leds/breadboard-layout "Breadboard Layout | Arduino Lesson 3. RGB LEDs | Adafruit Learning System"
+[2]: https://learn.adafruit.com/adafruit-arduino-lesson-3-rgb-leds/arduino-sketch "Arduino Sketch | Arduino Lesson 3. RGB LEDs | Adafruit Learning System"
