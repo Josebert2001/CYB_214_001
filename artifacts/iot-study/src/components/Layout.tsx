@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { cn } from '@/lib/utils';
-import { Book, CheckCircle2, ChevronRight, Menu, X, BrainCircuit, FileText, Home, Sun, Moon, Monitor, Layers, BookOpen } from 'lucide-react';
+import { Book, CheckCircle2, ChevronRight, Menu, X, BrainCircuit, FileText, Home, Sun, Moon, Monitor, Layers, BookOpen, FlaskConical } from 'lucide-react';
 import { useStudyStore } from '@/store/use-study-store';
 import { chaptersData } from '@/data/chapters-data';
 import { useTheme } from '@/components/theme-provider';
@@ -48,6 +48,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: '/quiz', label: 'Practice Quiz', icon: BrainCircuit },
     { href: '/flashcards', label: 'Flashcards', icon: Layers },
     { href: '/glossary', label: 'Glossary', icon: BookOpen },
+    { href: '/practicals', label: 'Practicals', icon: FlaskConical },
     { href: '/pdfs', label: 'Original PDFs', icon: FileText },
   ];
 

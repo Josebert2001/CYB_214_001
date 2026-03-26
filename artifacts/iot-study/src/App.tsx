@@ -11,6 +11,7 @@ import Quiz from "@/pages/Quiz";
 import PdfViewer from "@/pages/PdfViewer";
 import Flashcards from "@/pages/Flashcards";
 import Glossary from "@/pages/Glossary";
+import Practicals from "@/pages/Practicals";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ function Router() {
         <Route path="/quiz" component={Quiz} />
         <Route path="/flashcards" component={Flashcards} />
         <Route path="/glossary" component={Glossary} />
+        <Route path="/practicals" component={Practicals} />
         <Route path="/pdfs" component={PdfViewer} />
         <Route component={NotFound} />
       </Switch>

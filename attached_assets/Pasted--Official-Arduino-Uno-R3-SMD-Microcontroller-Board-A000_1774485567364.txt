@@ -1,0 +1,54 @@
+[![Official Arduino Uno R3 SMD Microcontroller Board - A000073 – Robocraze](https://tse4.mm.bing.net/th/id/OIP.Fed9lkTDmEzP41YKPaaB0QHaHa?pid=Api)](https://robocraze.com/products/official-arduino-uno-r3-smd-microcontroller-board?utm_source=chatgpt.com)
+
+Yes — let’s start with **Practical 1** by identifying the **correct parts** first.
+
+For this practical, the main things you should recognize are:
+**Arduino Uno**, **push button**, **breadboard**, **LED**, and a **current-limiting resistor**. Arduino’s button examples show that a pushbutton simply connects two points when pressed, and Arduino’s LED examples use a resistor in series with the LED to protect it. Arduino also documents `INPUT_PULLUP`, which is very useful for stable button reading. ([Arduino][1])
+
+Here is how to know the **correct parts**:
+
+**1. Arduino Uno**
+This is the main blue board with digital pins at the top and power/analog pins at the bottom. It is the controller for the whole circuit.
+
+**2. Push button**
+The common one for this practical is the small **6×6 mm tactile push button**. It is a **momentary** switch, meaning it only connects while you are pressing it. ([Arduino][1])
+
+**3. Breadboard**
+This is the white board with many holes used to build the circuit without soldering.
+
+**4. LED**
+The LED has polarity. The **longer leg is the anode (+)** and the **shorter leg is the cathode (-)**. If the legs were cut, the **flat side** on the LED body usually marks the cathode. ([makecode.adafruit.com][2])
+
+**5. Resistor**
+Use a **220 Ω resistor** or something close in that range for the LED in a simple 5V Arduino circuit. Arduino’s LED tutorial uses a resistor in series with the external LED. ([Arduino][3])
+
+This is the **simple practical picture in your head**:
+
+* the **button** is the input
+* the **Arduino** reads whether it is pressed
+* the **LED** is the output
+* the **resistor** protects the LED
+* the **breadboard** holds the connections together ([Arduino][1])
+
+A very safe way to wire this practical is:
+
+* **button → digital pin 2 and GND**
+* set pin 2 as **INPUT_PULLUP**
+* **LED anode (+) → digital output pin**
+* **LED cathode (-) → resistor → GND** ([Arduino Documentation][4])
+
+So for **Practical 1**, the correct things to physically pick out from your components are:
+
+* 1 Arduino Uno
+* 1 small tactile push button
+* 1 LED
+* 1 resistor around 220 Ω
+* jumper wires
+* breadboard ([Arduino][1])
+
+Next, I can make **Practical 1 wiring layout** for you in a very clear pin-to-pin form.
+
+[1]: https://www.arduino.cc/en/Tutorial/Button?utm_source=chatgpt.com "How to Wire and Program a Button | Arduino Documentation"
+[2]: https://makecode.adafruit.com/learnsystem/pins-tutorial/devices/led-connections?utm_source=chatgpt.com "Connecting LEDs"
+[3]: https://www.arduino.cc/en/Tutorial/Blink?utm_source=chatgpt.com "Blink | Arduino Documentation"
+[4]: https://docs.arduino.cc/built-in-examples/digital/InputPullupSerial/?utm_source=chatgpt.com "InputPullupSerial"
