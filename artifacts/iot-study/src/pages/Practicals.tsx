@@ -19,6 +19,7 @@ import arduinoImg from '@assets/Official_Arduino_Uno_R3_SMD_Microcontroller_Boar
 import ledImg from '@assets/10820-03-L_RGB_Clear_Common_Anode_LED-5mm_1774485602003.jpg';
 import buttonImg from '@assets/61bkpqiCYsL_1774485602002.jpg';
 import breadboardImg from '@assets/breadboard_1774485602003.jpg';
+import p1DiagramImg from '@assets/ChatGPT_Image_Mar_26,_2026,_01_47_10_AM_1774486043489.png';
 
 const componentImages: Record<string, string> = {
   arduino: arduinoImg,
@@ -241,7 +242,20 @@ export default function Practicals() {
           </div>
           <h2 className="text-xl font-display font-bold text-foreground">Circuit Diagram</h2>
         </div>
-        <div className="bg-card border border-border rounded-2xl p-4 md:p-6 shadow-sm">
+        <div className="bg-white dark:bg-slate-900 border border-border rounded-2xl overflow-hidden shadow-sm">
+          <img
+            src={p1DiagramImg}
+            alt="Practical 1 circuit diagram — push button controls LED with Arduino"
+            className="w-full object-contain"
+          />
+        </div>
+        <p className="mt-3 text-xs text-muted-foreground">
+          Yellow wire = D13 (LED). Blue wire = D7 (button). Red wire = 5V. Black wire = GND.
+        </p>
+
+        {/* Schematic overview */}
+        <div className="mt-4 bg-card border border-border rounded-2xl p-4 md:p-6 shadow-sm">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Connection Overview</p>
           <WiringDiagram />
         </div>
       </section>
